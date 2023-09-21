@@ -5,7 +5,7 @@
 
 ### Criar banco de dados
 
-sql
+```sql
 
 CREATE DATABASE filmes CHARACTER SET utf8mb4;
 
