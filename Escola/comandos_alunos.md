@@ -13,11 +13,11 @@ CREATE DATABASE tecdev_escola_isabelle CHARACTER SET utf8mb4;
 
 -- 2ª Digitação (SQL para criar a tabela Cursos)
 CREATE TABLE cursos (
-    id INT NOT  NULL PRIMARY KEY AUTO_INCREMENT,
+    id SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(30) NOT NULL,
-    carga_horaria  TEXT(1000) NOT NULL,
-    
-)
+    carga_horaria  SMALLINT NOT NULL,
+    professor_id SMALLINT NOT NULL,   
+);
 
 ```
 <!-- ____________________________________________________________________ -->
@@ -26,11 +26,11 @@ CREATE TABLE cursos (
 
 -- 3ª Digitação (SQL para criar a tabela Professores)
 CREATE TABLE professores (
-    id INT NOT  NULL PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(30) NOT NULL,
-    area_de_atuacao TEXT(1000) NOT NULL,
-    
-)
+    id SMALLINT NOT  NULL PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    area_de_atuacao ENUM ('design' , 'desenvolvimento' , 'intra') NOT NULL,
+    curso_id SMALLINT,
+);
 
 ```
 <!-- ____________________________________________________________________ -->
@@ -39,12 +39,13 @@ CREATE TABLE professores (
 
 -- 4ª Digitação (SQL para criar a tabela Alunos)
 CREATE TABLE alunos (
-    id INT NOT  NULL PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(30) NOT NULL,
-    data_de_nascimento TEXT(1000) NOT NULL,
+    id SMALLINT NOT  NULL PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    data_de_nascimento DATE NOT NULL,
     primeira_nota DECIMAL (4,2) NOT NULL,
     segunda_nota DECIMAL (4,2) NOT NULL,
-)
+    curso_id SMALLINT NOT NULL,
+);
 
 ```
 <!-- ____________________________________________________________________ -->
