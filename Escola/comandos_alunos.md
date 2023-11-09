@@ -3,49 +3,48 @@
 ### Criar banco de dados
 ```sql
 
--- 1ª Digitação (SQL para criar o Banco de dados)
-CREATE DATABASE tecdev_escola_isabelle CHARACTER SET utf8mb4;
+CREATE DATABASE tecdev_escola_ignacio CHARACTER SET utf8mb4;
 
 ```
 <!-- ____________________________________________________________________ -->
 ### Criar tabela cursos
 ```sql
 
--- 2ª Digitação (SQL para criar a tabela Cursos)
-CREATE TABLE cursos (
+CREATE TABLE cursos(
     id SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(30) NOT NULL,
-    carga_horaria  SMALLINT NOT NULL,
-    professor_id SMALLINT NOT NULL,   
+    carga_horaria SMALLINT NOT NULL,
+    professor_id SMALLINT
 );
+
 
 ```
 <!-- ____________________________________________________________________ -->
 ### Criar tabela professores
 ```sql
 
--- 3ª Digitação (SQL para criar a tabela Professores)
-CREATE TABLE professores (
-    id SMALLINT NOT  NULL PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE professores(
+    id SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50) NOT NULL,
-    area_de_atuacao ENUM ('design' , 'desenvolvimento' , 'intra') NOT NULL,
-    curso_id SMALLINT,
+    area_de_atuacao ENUM('design','desenvolvimento','infra') NOT NULL,
+    curso_id SMALLINT
 );
+
 
 ```
 <!-- ____________________________________________________________________ -->
 ### Criar tabela alunos
 ```sql
 
--- 4ª Digitação (SQL para criar a tabela Alunos)
-CREATE TABLE alunos (
-    id SMALLINT NOT  NULL PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE alunos(
+    id SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50) NOT NULL,
     data_de_nascimento DATE NOT NULL,
     primeira_nota DECIMAL (4,2) NOT NULL,
     segunda_nota DECIMAL (4,2) NOT NULL,
-    curso_id SMALLINT NOT NULL,
+    curso_id SMALLINT
 );
+
 
 ```
 <!-- ____________________________________________________________________ -->
@@ -210,17 +209,17 @@ INSERT INTO alunos (nome, data_de_nascimento,primeira_nota, segunda_nota, curso_
 -- 5ª Digitação (SQL para criar a consulta acima)
 
 ```
-![Relatório 1](resultados/relatorio1.jpg)
+![Relatório 1](resultados_alunos/relatorio1.jpg)
 
 <!-- _________________________ -->
 ### 2) Faça uma consulta que calcule a média das notas de cada aluno e as mostre com duas casas decimais.
 ```sql
 
--- 6ª Digitação (SQL para criar a consulta acima)
+SELECT nome, primeira_nota, segunda_nota, ROUND(AVG((primeira_nota + segunda_nota) / 2), 2) AS "Média das notas"  from alunos GROUP BY nome;
 
 
 ```
-![Relatório 2](resultados/relatorio2.jpg)
+![Relatório 2](resultados_alunos/relatorio2.jpg)
 
 <!-- _________________________ -->
 ### 3) Faça uma consulta que calcule o limite de faltas de cada curso de acordo com a carga horária. Considere o limite como 25% da carga horária. Classifique em ordem crescente pelo título do curso.
@@ -229,17 +228,17 @@ INSERT INTO alunos (nome, data_de_nascimento,primeira_nota, segunda_nota, curso_
 -- 7ª Digitação (SQL para criar a consulta acima)
 
 ```
-![Relatório 3](resultados/relatorio3.jpg)
+![Relatório 3](resultados_alunos/relatorio3.jpg)
 
 <!-- _________________________ -->
 
 ### 4) Faça uma consulta que mostre os nomes somente dos professores da área de desenvolvimento.
 ```sql
 
--- 8ª Digitação (SQL para criar a consulta acima)
+SELECT nome, area_de_atuacao FROM professores WHERE area_de_atuacao LIKE "%desenvolvimento%";
 
 ```
-![Relatório 4](resultados/relatorio4.jpg)
+![Relatório 4](resultados_alunos/relatorio4.jpg)
 <!-- _________________________ -->
 
 ### 5) Faça uma consulta que mostre a quantidade de professores por área de desenvolvimento.
@@ -248,17 +247,17 @@ INSERT INTO alunos (nome, data_de_nascimento,primeira_nota, segunda_nota, curso_
 -- 9ª Digitação (SQL para criar a consulta acima)
 
 ```
-![Relatório 5](resultados/relatorio5.jpg)
+![Relatório 5](resultados_alunos/relatorio5.jpg)
 
 <!-- _________________________ -->
 
 ### 6) Faça uma consulta que mostre o nome dos alunos, o título e a carga horária dos cursos que fazem.
 ```sql
 
--- 10ª Digitação (SQL para criar a consulta acima)
+SELECT alunos.nome, cursos.titulo, cursos.carga_horaria FROM alunos INNER JOIN cursos ON alunos.curso_id = cursos.id;
 
 ```
-![Relatório 6](resultados/relatorio6.jpg)
+![Relatório 6](resultados_alunos/relatorio6.jpg)
 
 <!-- _________________________ -->
 ### 7) Faça uma consulta que mostre o nome dos professores e o título do curso que lecionam. Classifique pelo nome do professor.
@@ -267,16 +266,24 @@ INSERT INTO alunos (nome, data_de_nascimento,primeira_nota, segunda_nota, curso_
 -- 11ª Digitação (SQL para criar a consulta acima)
 
 ```
-![Relatório 7](resultados/relatorio7.jpg)
+![Relatório 7](resultados_alunos/relatorio7.jpg)
 
 <!-- _________________________ -->
 ### 8) Faça uma consulta que mostre o nome dos alunos, o título dos cursos que fazem, e o professor de cada curso.
 ```sql
 
--- 12ª Digitação (SQL para criar a consulta acima)
+SELECT alunos.nome, cursos.titulo, professores.nome AS "Nome professor" FROM alunos LEFT JOIN cursos ON alunos.curso_id = cursos.id LEFT JOIN professores ON professores.curso_id = cursos.id;
+
+-- Explicação
+
+-- Esta consulta SQL combina informações de três tabelas diferentes, utilizando a cláusula LEFT JOIN para garantir que todas as linhas da tabela "alunos" sejam incluídas na saída, mesmo que não haja correspondências nas tabelas "cursos" e "professores".
+
+-- A tabela à esquerda é a tabela alunos, que contém informações sobre os alunos.
+
+-- A tabela à direita é uma CTE (Common Table Expression) chamada CursoProfessor,  está sendo usada para representar uma tabela virtual que combina informações sobre os cursos e, quando possível, o nome do professor associado a cada curso.
 
 ```
-![Relatório 8](resultados/relatorio8.jpg)
+![Relatório 8](resultados_alunos/relatorio8.jpg)
 
 <!-- _________________________ -->
 ### 9) Faça uma consulta que mostre a quantidade de alunos que cada curso possui. Classifique os resultados em ordem descrecente de acordo com a quantidade de alunos.
@@ -285,16 +292,16 @@ INSERT INTO alunos (nome, data_de_nascimento,primeira_nota, segunda_nota, curso_
 -- 13ª Digitação (SQL para criar a consulta acima)
 
 ```
-![Relatório 9](resultados/relatorio9.jpg)
+![Relatório 9](resultados_alunos/relatorio9.jpg)
 
 <!-- _________________________ -->
 ### 10) Faça uma consulta que mostre o nome dos alunos, suas notas, médias, e o título dos cursos que fazem. Devem ser considerados somente os alunos de Front-End e Back-End. Mostre classificados pelo nome do aluno.
 ```sql
 
--- 14ª Digitação (SQL para criar a consulta acima)
+SELECT alunos.nome, primeira_nota, segunda_nota, ROUND(AVG((primeira_nota + segunda_nota) / 2), 2) AS "Média das notas", cursos.titulo AS titulo from alunos INNER JOIN cursos ON alunos.curso_id = cursos.id WHERE curso_id IN(1,2) GROUP BY nome ORDER BY titulo;
 
 ```
-![Relatório 10](resultados/relatorio10.jpg)
+![Relatório 10](resultados_alunos/relatorio10.jpg)
 
 <!-- _________________________ -->
 ### 11) Faça uma consulta que altere o nome do curso de Figma para Adobe XD e sua carga horária de 10 para 15.
@@ -303,16 +310,20 @@ INSERT INTO alunos (nome, data_de_nascimento,primeira_nota, segunda_nota, curso_
 -- 15ª Digitação (SQL para criar a consulta acima)
 
 ```
-![Relatório 11](resultados/relatorio11.jpg)
+![Relatório 11](resultados_alunos/relatorio11.jpg)
 
 <!-- _________________________ -->
 ### 12) Faça uma consulta que exclua um aluno do curso de Redes de Computadores e um aluno do curso de UX/UI.
 ```sql
 
--- 16ª Digitação (SQL para criar a consulta acima)
+-- Excluindo um aluno do curso de Redes de Computadores
+DELETE FROM alunos WHERE nome = 'Robert Sheer' AND curso_id = 5;
+
+-- Excluindo um aluno do curso de UX/UI
+DELETE FROM alunos WHERE nome = 'Mário Calore' AND curso_id = 3;
 
 ```
-![Relatório 12](resultados/relatorio12.jpg)
+![Relatório 12](resultados_alunos/relatorio12.jpg)
 <!-- _________________________ -->
 ### 13) Faça uma consulta que mostre a lista de alunos atualizada e o título dos cursos que fazem, classificados pelo nome do aluno.
 ```sql
@@ -320,26 +331,27 @@ INSERT INTO alunos (nome, data_de_nascimento,primeira_nota, segunda_nota, curso_
 -- 17ª Digitação (SQL para criar a consulta acima)
 
 ```
-![Relatório 13](resultados/relatorio13.jpg)
+![Relatório 13](resultados_alunos/relatorio13.jpg)
 <!-- _________________________ -->
 ## DESAFIOS
 
 ### 1) Criar uma consulta que calcule a idade do aluno
 ```sql
 
--- 18ª Digitação (SQL para criar a consulta acima)
+SELECT alunos.nome, (2023-YEAR(alunos.data_de_nascimento)) AS "Idade dos alunos" FROM alunos;
 
 ```
-![Desafio 1](resultados/desafio1.jpg)
+![Desafio 1](resultados_alunos/desafio1.jpg)
 
 <!-- _________________________ -->
 ### 2) Criar uma consulta que calcule a média das notas de cada aluno e mostre somente os alunos que tiveram a média **maior ou igual a 7**.
 ```sql
 
--- 19ª Digitação (SQL para criar a consulta acima)
+SELECT alunos.nome, primeira_nota, segunda_nota, 
+ROUND(primeira_nota + segunda_nota)/ 2 AS "Média das notas" FROM alunos WHERE ((primeira_nota + segunda_nota) / 2) >= 7;
 
 ```
-![Desafio 2](resultados/desafio2.jpg)
+![Desafio 2](resultados_alunos/desafio2.jpg)
 
 <!-- _________________________ -->
 ### 3) Criar uma consulta que calcule a média das notas de cada aluno e mostre somente os alunos que tiveram a média **menor que 7**.
@@ -348,14 +360,14 @@ INSERT INTO alunos (nome, data_de_nascimento,primeira_nota, segunda_nota, curso_
 -- 20ª Digitação (SQL para criar a consulta acima)
 
 ```
-![Desafio 3](resultados/desafio3.jpg)
+![Desafio 3](resultados_alunos/desafio3.jpg)
 
 <!-- _________________________ -->
 
 ### 4) Criar uma consulta que mostre a quantidade de alunos com média **maior ou igual a 7**.
 ```sql
 
--- 21ª Digitação (SQL para criar a consulta acima)
+SELECT COUNT(((primeira_nota + segunda_nota) / 2)) As "QTD. de alunos" FROM alunos  WHERE ((primeira_nota + segunda_nota) / 2) >= 7;
 
 ```
-![Desafio 4](resultados/desafio4.jpg)
+![Desafio 4](resultados_alunos/desafio4.jpg)
