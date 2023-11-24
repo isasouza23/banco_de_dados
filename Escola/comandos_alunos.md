@@ -262,7 +262,7 @@ WHERE area_de_atuacao LIKE "%desenvolvimento%";
 
 SELECT alunos.nome, cursos.titulo, cursos.carga_horaria 
 FROM alunos INNER JOIN cursos 
-                                                                                                                                                                                                                                           ON alunos.curso_id = cursos.id;
+ON alunos.curso_id = cursos.id;
 
 ```
 ![Relatório 6](resultados_alunos/relatorio6.jpg)
@@ -321,7 +321,12 @@ SELECT alunos.nome, primeira_nota, segunda_nota, ROUND(AVG((primeira_nota + segu
 ### 11) Faça uma consulta que altere o nome do curso de Figma para Adobe XD e sua carga horária de 10 para 15.
 ```sql
 
--- 15ª Digitação (SQL para criar a consulta acima)
+-- 15ª Digitação (SQL para criar a consulta acima
+
+UPDATE cursos
+SET titulo = 'AdobeXD',
+carga_horaria = 15
+WHERE id = 4;
 
 ```
 ![Relatório 11](resultados_alunos/relatorio11.jpg)
@@ -343,7 +348,10 @@ DELETE FROM alunos WHERE nome = 'Mário Calore' AND curso_id = 3;
 ```sql
 
 -- 17ª Digitação (SQL para criar a consulta acima)
-
+SELECT alunos.nome, cursos.titulo, cursos.carga_horaria 
+FROM alunos INNER JOIN cursos 
+ON alunos.curso_id = cursos.id;
+ORDER BY nome;
 ```
 ![Relatório 13](resultados_alunos/relatorio13.jpg)
 <!-- _________________________ -->
@@ -372,7 +380,8 @@ ROUND(primeira_nota + segunda_nota)/ 2 AS "Média das notas" FROM alunos WHERE (
 ```sql
 
 -- 20ª Digitação (SQL para criar a consulta acima)
-
+SELECT alunos.nome, primeira_nota, segunda_nota, 
+ROUND(primeira_nota + segunda_nota)/ 2 AS "Média das notas" FROM alunos WHERE ((primeira_nota + segunda_nota) / 2) < 7;
 ```
 ![Desafio 3](resultados_alunos/desafio3.jpg)
 
